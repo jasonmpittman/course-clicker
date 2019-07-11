@@ -1,7 +1,7 @@
 from flask import (
     Flask, render_template, request, flash, redirect, url_for, session
 )
-from models import db
+from models import db, Users
 from werkzeug.security import generate_password_hash, check_password_hash
 
 clicker = Flask(__name__)
@@ -16,6 +16,10 @@ db.create_all(app=clicker)
 @clicker.route('/')
 def home():
     return render_template('index.html')
+
+@clicker.route('/polls')
+def polls():
+    return render_template('polls.html')
 
 # route for login handling
 @clicker.route('/login', methods=['POST'])
@@ -51,10 +55,12 @@ def signup():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-    
+        role = 'student'
+
         password = generate_password_hash(password)
 
-        user = Users(username=username, password=password)
+        user = Users(username=username, password=password, role=role)
+        
         db.session.add(user)
         db.session.commit()
 

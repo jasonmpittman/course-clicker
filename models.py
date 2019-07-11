@@ -38,6 +38,8 @@ class Polls(Base):
     def __repr__(self):
         return self.answer.name
 
+# user data model
 class Users(Base):
     username = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(200))
+    role = db.Column(db.String(7))

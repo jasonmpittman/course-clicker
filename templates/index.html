@@ -16,6 +16,26 @@
     <link href="static/css/jumbotron-narrow.css" rel="stylesheet">
 
     <script src="static/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- style override for custom color-->
+    <style>
+      .btn { 
+        color: #ffffff; 
+        background-color: #611BBD; 
+        border-color: #130269; 
+      }
+
+      .btn:hover, 
+      .btn:focus, 
+      .btn:active, 
+      .btn.active, 
+      .open .dropdown-toggle.btn { 
+        color: #ffffff; 
+        background-color: #49247A; 
+        border-color: #130269; 
+      } 
+    </style>
+
   </head>
 
   <body>
@@ -30,7 +50,7 @@
               <li role="presentation"><a href="{{ url_for('logout') }}">Logout</a></li>
             {% endif %}
             
-            <li role="presentation"><a href="/polls">Polls</a></li>
+            <li role="presentation"><a href="{{ url_for('polls') }}">Polls</a></li>
             <li role="presentation"><a href="/attendance">Attendance</a></li>
           </ul>
         </nav>
