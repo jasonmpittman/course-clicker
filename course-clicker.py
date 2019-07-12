@@ -19,7 +19,27 @@ def home():
 
 @clicker.route('/polls')
 def polls():
-    return render_template('polls.html')
+    if 'user' in session:
+        user = Users.query.filter_by(username=session['user']).first()
+        if user.role == 'faculty':
+            return render_template('polls.html')
+        else:
+            return redirect(url_for('poll'))
+    else:
+        flash('Please login to access polls')
+        return redirect(url_for('home'))
+
+@clicker.route('/poll')
+def poll():
+    return render_template('poll.html')
+
+@clicker.route('/attendance')
+def attendance():
+    if 'user' in session:
+        return render_template('attendance.html')
+    else:
+        flash('Please login to access attendance')
+        return redirect(url_for('home'))
 
 # route for login handling
 @clicker.route('/login', methods=['POST'])

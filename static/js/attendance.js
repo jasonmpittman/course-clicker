@@ -4,7 +4,7 @@ var Align = {
     fontFamily: 'EB Garamond'
   };
   
-  var PollForm = React.createClass({
+  var AttendanceForm = React.createClass({
   
     getInitialState: function(){
       // set initial state of form inputs
@@ -36,7 +36,7 @@ var Align = {
     render: function(){
       return (
       <div>
-        <form id="poll_form" className="form-signin" onSubmit={this.handleSubmit}>
+        <form id="attendance_form" className="form-signin" onSubmit={this.handleSubmit}>
           <h2 className="form-signin-heading" style={Align}>Create a poll</h2>
   
           <div className="form-group has-success">
@@ -56,7 +56,7 @@ var Align = {
           </div>
           <br />
         </form>
-        
+  
         <h3 style={Align}>Live Preview</h3>
         <LivePreview title={this.state.title} options={this.state.options} />
       </div>
@@ -98,7 +98,7 @@ var Align = {
   
   ReactDOM.render(
     <div>
-      <PollForm />
+      <AttendanceForm />
     </div>,
     document.getElementById('form_container')
   );
