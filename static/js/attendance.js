@@ -88,7 +88,7 @@ var Align = {
             <form>
               {options}
               <br />
-              <button type="submit" className="btn btn-success btn-outline hvr-grow">Vote!</button>
+              <button type="submit" className="btn btn-success btn-outline hvr-grow">I'm Here</button>
             </form>
           </div>
         </div>
