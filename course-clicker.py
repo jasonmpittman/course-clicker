@@ -1,16 +1,30 @@
+#!/usr/bin/env python3
+
 from flask import (
     Flask, render_template, request, flash, redirect, url_for, session
 )
-from models import db, Users
+from flask_admin import Admin
+from admin import AdminView
+from models import db, Users, Polls, Questions, Answers, Attendance
 from werkzeug.security import generate_password_hash, check_password_hash
 
 clicker = Flask(__name__)
 
-#load config options
+# load config options
 clicker.config.from_object('config')
 
 db.init_app(clicker)
 db.create_all(app=clicker)
+
+# instantiate flask admin
+admin = Admin(clicker, name='Dashboard', index_view=AdminView(Users, db.session, url='/admin', endpoint='admin'))
+
+# build admin views
+admin.add_view(AdminView(Users, db.session))
+admin.add_view(AdminView(Polls, db.session))
+admin.add_view(AdminView(Questions, db.session))
+admin.add_view(AdminView(Answers, db.session))
+admin.add_view(AdminView(Attendance, db.session))
 
 # route for home
 @clicker.route('/')
@@ -67,7 +81,7 @@ def login():
     else:
         flash('Username or password is incorrect')
     
-    return redirect(url_for('home'))
+    return redirect(request.args.get('next') or url_for('home'))
 
 # route for logout handling
 @clicker.route('/logout')
