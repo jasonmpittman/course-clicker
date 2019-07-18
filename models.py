@@ -17,6 +17,14 @@ class Questions(Base):
 
     def __repr__(self):
         return self.question
+    
+    def to_json(self):
+        return {
+            'title': self.title,
+            'options': 
+                [{'name': option.option.name, 'vote_count': option.vote_count}
+                    for option in self.options.all()]
+        }
 
 # answer data model
 class Answers(Base):

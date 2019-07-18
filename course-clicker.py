@@ -31,6 +31,24 @@ admin.add_view(AdminView(Attendance, db.session))
 def home():
     return render_template('index.html')
 
+# route for REST API to polls
+@clicker.route('/api/polls', methods=['GET', 'POST'])
+def api_polls():
+    if request.method == 'POST':
+        poll = request.get_json()
+    
+        return "The title of the poll is {} and the options are {} and {}".format(poll['title'], *poll['options'])
+    
+    else:
+        all_polls = {}
+    
+    questions = Questions.query.all()
+    for question in questions:
+        all_polls[question.title] = {'options': [poll.option.name for poll in Polls.query.filter_by(question=question)]}
+
+    return jsonify(all_polls)
+
+
 @clicker.route('/polls')
 def polls():
     if 'user' in session:
