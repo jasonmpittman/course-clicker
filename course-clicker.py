@@ -37,15 +37,26 @@ def api_polls():
     if request.method == 'POST':
         poll = request.get_json()
     
-        return "The title of the poll is {} and the options are {} and {}".format(poll['title'], *poll['options'])
+        for key, value in poll.items():
+            if not value:
+                return jsonify({'error': 'value for {} is empty'.format(key)})
+
+        question = poll['question']
+        answers_query = lambda answer : Answers.query.filter(Answers.name.like(answer))
+
+        answers = [Polls(answer=Answers(name=answer)) for answer in poll['answers']]
+
+        new_question = Questions(question=question, answers=answers)
+
+        db.session.add(new_question)
+        db.session.commit()
+
+        return jsonify({'message': 'Poll was created successfully'}) 
     
     else:
-        all_polls = {}
+        polls = Questions.query.join(Polls).all()
+        all_polls = {'Polls': [poll.to_json() for poll in polls]}
     
-    questions = Questions.query.all()
-    for question in questions:
-        all_polls[question.title] = {'options': [poll.option.name for poll in Polls.query.filter_by(question=question)]}
-
     return jsonify(all_polls)
 
 
@@ -101,15 +112,6 @@ def login():
     
     return redirect(request.args.get('next') or url_for('home'))
 
-# route for logout handling
-@clicker.route('/logout')
-def logout():
-    if 'user' in session:
-        session.pop('user')
-        flash('Logout successful')
-    
-    return redirect(url_for('home'))
-
 # route for signup handling
 @clicker.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -130,6 +132,15 @@ def signup():
         return redirect(url_for('home'))
     
     return render_template('signup.html')
+
+# route for logout handling
+@clicker.route('/logout')
+def logout():
+    if 'user' in session:
+        session.pop('user')
+        flash('Logout successful')
+    
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     clicker.run()

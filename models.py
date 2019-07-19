@@ -11,7 +11,7 @@ class Base(db.Model):
     date_modified = db.Column(db.DateTime, default=db.func.current_timestamp(),
         onupdate=db.func.current_timestamp())
 
-# question data model
+# question data model 
 class Questions(Base):
     question = db.Column(db.String(5000))
 
@@ -20,10 +20,15 @@ class Questions(Base):
     
     def to_json(self):
         return {
-            'title': self.title,
+            'question': self.question,
+            #'options': [Polls(answer=Answers(name=answer))
+                #if answers_query(answer).count() == 0
+                #else Polls(answer=answers_query(answer).first()) for answer in poll['answers']
+            #],
             'options': 
                 [{'name': option.option.name, 'vote_count': option.vote_count}
-                    for option in self.options.all()]
+                    for option in self.options.all()],
+            'status': self.status
         }
 
 # answer data model
