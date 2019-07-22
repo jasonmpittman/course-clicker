@@ -1,25 +1,26 @@
 // css style to align text to the center of it's container
 var Align = {
     textAlign: 'center',
-    fontFamily: 'EB Garamond'
   };
   
   var StudentAttendanceForm = React.createClass({
-  
+    
+    //don't need this
     getInitialState: function(){
       // set initial state of form inputs
       return {title: '', option: '', options: []}
     },
   
-    handleTitleChange: function(e){
+    handleCourseChange: function(e){
       //change title as the user types
-      this.setState({title: e.target.value});
+      this.setState({course: e.target.value});
     },
   
-    handleOptionChange: function(e){
-      this.setState({option: e.target.value});
+    handleKeywordChange: function(e){
+      this.setState({keyword: e.target.value});
     },
   
+    //don't need this
     handleOptionAdd: function(e){
       //update poll options and reset options to an empty string
       this.setState({
@@ -40,9 +41,15 @@ var Align = {
           <h2 className="form-signin-heading" style={Align}>Submit Attendance</h2>
   
           <div className="form-group has-success">
-            <label htmlFor="option" className="sr-only">Option</label>
-            <input type="text" id="option" name="option" className="form-control" placeholder="Enter keyword here" onChange={this.handleOptionChange}
-            value={this.state.option ? this.state.option: ''} required autoFocus />
+            <label htmlFor="course" className="sr-only">Course</label>
+            <input type="text" id="course" name="course" className="form-control" placeholder="Enter course code here" onChange={this.handleCourseChange}
+            value={this.state.course ? this.state.course: ''} required autoFocus />
+          </div>
+
+          <div className="form-group has-success">
+            <label htmlFor="keyword" className="sr-only">Keyword</label>
+            <input type="text" id="keyword" name="keyword" className="form-control" placeholder="Enter keyword here" onChange={this.handleKeywordChange}
+            value={this.state.keyword ? this.state.keyword: ''} required autoFocus />
           </div>
   
           <div className="row form-group">

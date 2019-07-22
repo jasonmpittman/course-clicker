@@ -59,22 +59,20 @@ def api_polls():
     
     return jsonify(all_polls)
 
+# route for REST API for answers
+@clicker.route('/api/polls/answers')
+def api_polls_answers():
+    all_answers = [answer.to_json() for answer in Answers.query.all()]
 
-@clicker.route('/polls')
+    return jsonify(all_answers)
+
+@clicker.route('/polls', methods=['GET'])
 def polls():
     if 'user' in session:
-        user = Users.query.filter_by(username=session['user']).first()
-        if user.role == 'faculty':
-            return render_template('polls.html')
-        else:
-            return redirect(url_for('poll'))
+        return render_template('polls.html')
     else:
         flash('Please login to access polls')
         return redirect(url_for('home'))
-
-@clicker.route('/poll')
-def poll():
-    return render_template('poll.html')
 
 @clicker.route('/attendance')
 def attendance():
