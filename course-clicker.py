@@ -21,9 +21,9 @@ admin = Admin(clicker, name='Dashboard', index_view=AdminView(Users, db.session,
 
 # build admin views
 admin.add_view(AdminView(Users, db.session))
-admin.add_view(AdminView(Polls, db.session))
-admin.add_view(AdminView(Questions, db.session))
-admin.add_view(AdminView(Answers, db.session))
+#admin.add_view(AdminView(Polls, db.session))
+#admin.add_view(AdminView(Questions, db.session))
+#admin.add_view(AdminView(Answers, db.session))
 admin.add_view(AdminView(Attendance, db.session))
 
 # route for home
@@ -31,7 +31,7 @@ admin.add_view(AdminView(Attendance, db.session))
 def home():
     return render_template('index.html')
 
-# route for REST API to polls
+#region route for REST API to polls
 @clicker.route('/api/polls', methods=['GET', 'POST'])
 def api_polls():
     if request.method == 'POST':
@@ -58,8 +58,9 @@ def api_polls():
         all_polls = {'Polls': [poll.to_json() for poll in polls]}
     
     return jsonify(all_polls)
+#endregion
 
-# route for REST API for answers
+#region route for REST API for answers
 @clicker.route('/api/polls/answers')
 def api_polls_answers():
     all_answers = [answer.to_json() for answer in Answers.query.all()]
@@ -73,25 +74,28 @@ def polls():
     else:
         flash('Please login to access polls')
         return redirect(url_for('home'))
+#endregion
+
+@clicker.route('/api/attendance', methods=['POST'])
+def api_attendance():
+    if request.method == 'POST':
+        attendance = request.get_json()
+
+        return "Attendance for {} in course {} with keyword {}".format(attendance['user'], ['course'], ['keyword'])
 
 @clicker.route('/attendance')
 def attendance():
     if 'user' in session:
-        user = Users.query.filter_by(username=session['user']).first()
-        if user.role == 'faculty':
-            return render_template('attendance.html')
-        else:
-            return redirect(url_for('attendee'))
+        #user = Users.query.filter_by(username=session['user']).first()
+        #if user.role == 'faculty':
+        return render_template('attendance.html')
+        #else:
+            #return redirect(url_for('attendee'))
     else:
         flash('Please login to access attendance')
         return redirect(url_for('home'))
 
-# route for student attendee to submit attendance
-@clicker.route('/attendee')
-def attendee():
-    return render_template('attendee.html')
-
-# route for login handling
+#region route for login handling
 @clicker.route('/login', methods=['POST'])
 def login():
     username = request.form['username']
@@ -109,8 +113,9 @@ def login():
         flash('Username or password is incorrect')
     
     return redirect(request.args.get('next') or url_for('home'))
+#endregion
 
-# route for signup handling
+#region route for signup handling
 @clicker.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
@@ -130,8 +135,9 @@ def signup():
         return redirect(url_for('home'))
     
     return render_template('signup.html')
+#endregion
 
-# route for logout handling
+#region route for logout handling
 @clicker.route('/logout')
 def logout():
     if 'user' in session:
@@ -139,6 +145,7 @@ def logout():
         flash('Logout successful')
     
     return redirect(url_for('home'))
+#endregion
 
 if __name__ == '__main__':
     clicker.run()

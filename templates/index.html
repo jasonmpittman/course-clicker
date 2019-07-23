@@ -50,7 +50,7 @@
               <li role="presentation"><a href="{{ url_for('logout') }}">Logout</a></li>
             {% endif %}
             
-            <li role="presentation"><a href="{{ url_for('polls') }}">Polls</a></li>
+            <!-- <li role="presentation"><a href="{{ url_for('polls') }}">Polls</a></li> -->
             <li role="presentation"><a href="/attendance">Attendance</a></li>
           </ul>
         </nav>
@@ -64,7 +64,7 @@
         {% if not session.get('user') %}
         <p><a class="btn btn-lg btn-success" href="{{ url_for('signup') }}" role="button">Sign up today</a></p>
         {% else %}
-        <p><a class="btn btn-lg btn-success" href="/polls" role="button">Create a poll</a></p>
+        <!--<p><a class="btn btn-lg btn-success" href="/polls" role="button">Create a poll</a></p> -->
         {% endif %}
         
       </div>

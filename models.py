@@ -61,3 +61,12 @@ class Users(Base):
 class Attendance(Base):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     keyword = db.Column(db.String(100))
+    course = db.Column(db.String(7))
+
+    def to_json(self):
+        return {
+            'user': self.user_id,
+            'course': self.course,
+            'keyword': self.keyword  
+
+        }
