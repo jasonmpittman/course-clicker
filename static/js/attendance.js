@@ -3,6 +3,8 @@ var Align = {
     textAlign: 'center',
   };
   
+  var origin = window.location.origin;
+
   var StudentAttendanceForm = React.createClass({
     
     //don't need this
@@ -28,14 +30,16 @@ var Align = {
       option: ''
       });
     },
-  
+
     handleSubmit: function(e){
-      alert('Button works')
-      var user = this.state.user
+      e.preventDefault();
+
+      var user = this.state.user //this is undefined
       var course = this.state.course
       var keyword = this.state.keyword
 
       var data = {'user': user, 'course': course, 'keyword': keyword}
+      
       var url = origin + '/api/attendance'
 
       $.ajax({
@@ -51,8 +55,6 @@ var Align = {
           alert('Attendance submit failed: ' + err.toString());
         }.bind(this)
       });
-
-      e.preventDefault();
     },
   
     render: function(){

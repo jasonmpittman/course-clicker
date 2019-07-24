@@ -76,21 +76,25 @@ def polls():
         return redirect(url_for('home'))
 #endregion
 
-@clicker.route('/api/attendance', methods=['POST'])
+@clicker.route('/api/attendance', methods=['POST', 'GET'])
 def api_attendance():
     if request.method == 'POST':
         attendance = request.get_json()
 
         return "Attendance for {} in course {} with keyword {}".format(attendance['user'], ['course'], ['keyword'])
+    else:
+        all_attendance = {}
+
+        attendance = Attendance.query.all()
+        for attendee in attendance:
+            all_attendance[attendee.user] = {'user': [Attendance.user_id for user in User.query.filter_by(user_id=user_id)]}
+        
+        return jsonify(all_attendance)
 
 @clicker.route('/attendance')
 def attendance():
     if 'user' in session:
-        #user = Users.query.filter_by(username=session['user']).first()
-        #if user.role == 'faculty':
         return render_template('attendance.html')
-        #else:
-            #return redirect(url_for('attendee'))
     else:
         flash('Please login to access attendance')
         return redirect(url_for('home'))
